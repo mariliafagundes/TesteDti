@@ -12,8 +12,13 @@ time.sleep(2) # Esperando a página carregar
 # Cenário 1: Verificar se o login com informações válidas está funcionando corretamente.
 def test_login_credenciais_validas():
     # Dado que o usuário esteja na página de login
-    driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
-    time.sleep(3)
+    try:
+        logout = driver.find_element(By.CLASS_NAME, 'logout')  # Garantindo que o usuário está deslogado
+        logout.click()
+    except:
+        driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
+        time.sleep(3)
+    
     # Quando o usuário inserir informações válidas de login
     email_input = driver.find_element(By.ID, 'email')
     email_input.send_keys("test@outlook.com")
@@ -22,6 +27,7 @@ def test_login_credenciais_validas():
     login_button = driver.find_element(By.XPATH,'//*[@id="SubmitLogin"]/span')
     login_button.click()
     time.sleep(2)  # Espera para garantir que a página seja carregada
+
     # Então o usuário deve ser redirecionado para a página da sua conta
     try:
         elemento_pagina_conta = driver.find_element(By.CLASS_NAME, 'info-account')
@@ -39,6 +45,7 @@ def test_login_email_invalido():
     except:
         driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
         time.sleep(3)
+
     # Quando o usuário inserir um e-mail inválido
     email_input = driver.find_element(By.ID, 'email')
     email_input.send_keys("invalidemail")
@@ -49,6 +56,7 @@ def test_login_email_invalido():
     time.sleep(2)  # Espera para garantir que a página seja carregada
     get_source = driver.page_source
     search_text = "Invalid email address."
+
     # Então o usuário deve receber uma mensagem de email inválido.
     if search_text in get_source: # Verificando se a mensagem de erro está presente na página.
         print('sucesso.')
@@ -59,8 +67,12 @@ def test_login_email_invalido():
 # Cenário 3: Verificar login com senha incorreta
 def test_login_senha_incorreta():
     # Dado que o usuário esteja na página de login
-    driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
-    time.sleep(3)
+    try:
+        logout = driver.find_element(By.CLASS_NAME, 'logout')  # Garantindo que o usuário está deslogado
+        logout.click()
+    except:
+        driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
+        time.sleep(3)
 
     # Quando o usuário inserir uma senha inválida
     email_input = driver.find_element(By.ID, 'email')
