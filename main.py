@@ -21,7 +21,7 @@ def test_login_credenciais_validas():
     password_input.send_keys("senha123")
     login_button = driver.find_element(By.XPATH,'//*[@id="SubmitLogin"]/span')
     login_button.click()
-    time.sleep(3)  # Espera para garantir que a página seja carregada
+    time.sleep(2)  # Espera para garantir que a página seja carregada
     # Então o usuário deve ser redirecionado para a página da sua conta
     try:
         elemento_pagina_conta = driver.find_element(By.CLASS_NAME, 'info-account')
@@ -33,8 +33,12 @@ def test_login_credenciais_validas():
 # Cenário 2: Verificar login com email inválido
 def test_login_email_invalido():
     # Dado que o usuário esteja na página de login
-    driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
-    time.sleep(3)
+    try:
+        logout = driver.find_element(By.CLASS_NAME, 'logout') # Garantindo que o usuário está deslogado
+        logout.click()
+    except:
+        driver.get("http://automationpractice.pl/index.php?controller=authentication&back=myaccount")
+        time.sleep(3)
     # Quando o usuário inserir um e-mail inválido
     email_input = driver.find_element(By.ID, 'email')
     email_input.send_keys("invalidemail")
@@ -42,7 +46,7 @@ def test_login_email_invalido():
     password_input.send_keys("examplepassword")
     login_button = driver.find_element(By.XPATH,'//*[@id="SubmitLogin"]/span')
     login_button.click()
-    time.sleep(3)  # Espera para garantir que a página seja carregada
+    time.sleep(2)  # Espera para garantir que a página seja carregada
     get_source = driver.page_source
     search_text = "Invalid email address."
     # Então o usuário deve receber uma mensagem de email inválido.
@@ -65,7 +69,7 @@ def test_login_senha_incorreta():
     password_input.send_keys("123")
     login_button = driver.find_element(By.XPATH, '//*[@id="SubmitLogin"]/span')
     login_button.click()
-    time.sleep(3)  # Espera para garantir que a página seja carregada
+    time.sleep(2)  # Espera para garantir que a página seja carregada
 
     # Então o usuário deve receber uma mensagem de senha inválida.
     get_source = driver.page_source
